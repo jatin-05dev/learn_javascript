@@ -1,0 +1,32 @@
+{
+  "students": [
+    {
+      "id": "ijoi",
+      "rollno": "kmokm",
+      "name": "mm",
+      "city": "km",
+      "fess": "o,l"
+    },
+    {
+      "id": "jatin",
+      "rollno": "jnj",
+      "name": "klk;l,",
+      "city": "kmlmk",
+      "fess": "kpokp"
+    },
+    {
+      "id": "do",
+      "rollno": "ijoij",
+      "name": "ok",
+      "city": "oijoi",
+      "fess": "okp"
+    },
+    {
+      "id": "rgr",
+      "rollno": "fvf",
+      "name": "jm",
+      "city": "k,l",
+      "fess": "klp"
+    }
+  ]
+}

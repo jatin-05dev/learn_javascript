@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Ball Move</title>
+  <style>
+    body {
+      height: 100vh;
+      margin: 0;
+      padding: 0;
+      position: relative;
+
+    }
+
+    #ball {
+      width: 50px;
+      position: absolute;
+      left: 195px;
+      top: 120px;
+      border-radius: 50%;
+      border: 2px solid red;
+    }
+
+    #play1,
+    #play2 {
+      height: 150px;
+      width: 100px;
+      cursor: pointer;
+    }
+
+    #play1 {
+      float: right;
+    }
+
+    #play2 {
+      float: left;
+    }
+  </style>
+</head>
+
+<body>
+
+
+  <img src="play1.jpg" id="play1">
+  <img src="download.jpeg" id="ball">
+  <img src="play2.jpg" id="play2">
+
+  <script>
+    let lft = 195;
+    let interval;
+
+    function moveRight() {
+      clearInterval(interval);
+      interval = setInterval(() => {
+        if (lft < 1575) {
+          lft += 5;
+          document.getElementById("ball").style.left = lft + "px";
+        } else {
+          clearInterval(interval);
+        }
+      }, 50);
+    }
+
+    function moveLeft() {
+      clearInterval(interval);
+      interval = setInterval(() => {
+        if (lft > 0) {
+          lft -= 5;
+          document.getElementById("ball").style.left = lft + "px";
+        } else {
+          clearInterval(interval);
+        }
+      }, 50);
+    }
+
+    document.getElementById("play1").addEventListener("click", moveLeft);
+    document.getElementById("play2").addEventListener("click", moveRight);
+  </script>
+
+</body>
+
+</html>

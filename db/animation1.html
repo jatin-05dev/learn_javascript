@@ -1,0 +1,39 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #box{
+            height: 10px;
+            width: 10px;
+            background-color:red;
+        }
+    </style>
+    <script>
+        let wd=1;
+        let ObjInt;
+        function myFun(){
+            wd=wd+10;
+            let Obj = document.getElementById("box");
+            Obj.style.width=wd+"px";
+        }
+        function myStart(){
+            ObjInt= setInterval(myFun,100);
+        }
+        function myStop(){
+            clearInterval(ObjInt);
+        }
+    </script>       
+</head>
+<body>
+    <button onclick="myStart()">Click</button>
+    <button onclick="myStop()"> Stop </button>
+    <div id="box">
+
+    </div>
+</body>
+</html> 
+
+ 
