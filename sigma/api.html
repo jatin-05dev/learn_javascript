@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        // function diplay(){
+        //     let filenm="raj.txt";
+        //     fetch(filenm).then((x)=>x.then()).then(y=> document.getElementById
+        //     ("demo").innerHTML=y);
+        // }
+        // async function display(){
+        //     let filenm="raj.txt";
+        //     let obj =await fetch(filenm);
+        //     let data=await obj.text();
+        //     document.getElementById("demo").innerHTML=data;
+        // }
+                async function display(){
+            let url="https://jsonplaceholder.typicode.com/comments";
+            let obj =await fetch(filenm);
+            let data=await obj.json();
+            document.getElementById("demo").innerHTML=data;
+        }
+    </script>
+</head>
+<body>
+    <button onclick="display()">click here!</button>
+    <p id="demo">  </p>
+</body>
+</html>
