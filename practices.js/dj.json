@@ -1,0 +1,6 @@
+ {
+  "name": "Aman",
+  "age": 20,
+  "skills": ["HTML", "CSS", "JavaScript"],
+  "isStudent": true
+}

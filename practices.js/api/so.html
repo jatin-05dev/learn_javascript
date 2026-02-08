@@ -1,0 +1,116 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Solar System with Orbits</title>
+<style>
+  body {
+    margin: 0;
+    background: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  .solar-system {
+    position: relative;
+    width: 600px;
+    height: 600px;
+  }
+
+  .sun {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 80px;
+    height: 80px;
+    background: yellow;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    
+  }
+
+  .orbit {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    border: 1px dashed rgba(255,255,255,0.3); /* हल्का circle */
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .planet {
+    position: absolute;
+    border-radius: 50%;
+  }
+
+  /* Planets basic colors and size */
+  .mercury { width: 10px; height: 10px; background: gray; }
+  .venus   { width: 14px; height: 14px; background: orange; }
+  .earth   { width: 16px; height: 16px; background: blue; }
+  .mars    { width: 12px; height: 12px; background: red; }
+  .jupiter { width: 30px; height: 30px; background: brown; }
+  .saturn  { width: 26px; height: 26px; background: tan; }
+  .uranus  { width: 20px; height: 20px; background: lightblue; }
+  .neptune { width: 20px; height: 20px; background: darkblue; }
+</style>
+</head>
+<body>
+<div class="solar-system">
+  <div class="sun"></div>
+
+  <!-- Orbit + Planet -->
+  <div class="orbit" style="width:120px; height:120px;">
+    <div class="planet mercury"></div>
+  </div>
+  <div class="orbit" style="width:180px; height:180px;">
+    <div class="planet venus"></div>
+  </div>
+  <div class="orbit" style="width:240px; height:240px;">
+    <div class="planet earth"></div>
+  </div>
+  <div class="orbit" style="width:300px; height:300px;">
+    <div class="planet mars"></div>
+  </div>
+  <div class="orbit" style="width:400px; height:400px;">
+    <div class="planet jupiter"></div>
+  </div>
+  <div class="orbit" style="width:480px; height:480px;">
+    <div class="planet saturn"></div>
+  </div>
+  <div class="orbit" style="width:560px; height:560px;">
+    <div class="planet uranus"></div>
+  </div>
+  <div class="orbit" style="width:640px; height:640px;">
+    <div class="planet neptune"></div>
+  </div>
+</div>
+
+<script>
+const planets = [
+  {el: document.querySelector('.mercury'), radius: 60, speed: 0.03, angle: 0},
+  {el: document.querySelector('.venus'), radius: 90, speed: 0.02, angle: 0},
+  {el: document.querySelector('.earth'), radius: 120, speed: 0.015, angle: 0},
+  {el: document.querySelector('.mars'), radius: 150, speed: 0.01, angle: 0},
+  {el: document.querySelector('.jupiter'), radius: 200, speed: 0.008, angle: 0},
+  {el: document.querySelector('.saturn'), radius: 240, speed: 0.006, angle: 0},
+  {el: document.querySelector('.uranus'), radius: 280, speed: 0.004, angle: 0},
+  {el: document.querySelector('.neptune'), radius: 320, speed: 0.003, angle: 0}
+];
+
+function animate() {
+  planets.forEach(p => {
+    p.angle += p.speed;
+    const x = (p.radius * Math.cos(p.angle)) + p.radius; 
+    const y = (p.radius * Math.sin(p.angle)) + p.radius;
+    p.el.style.left = x + "px";
+    p.el.style.top  = y + "px";
+  });
+  requestAnimationFrame(animate);
+}
+animate();
+</script>
+</body>
+</html>

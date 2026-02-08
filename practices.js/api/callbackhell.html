@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+
+
+    <script>
+        // console.log("km")
+        // console.log("lkl")
+        // setTimeout(() => {
+            // console.log("km")
+        // },  5000);
+        // console.log("mlkm");
+        //  
+        // function sum(a,b){
+            // console.log(a+b);
+        // } 
+        // function cal(a,b,sum){
+            // sum(a,b)
+        // }
+        // cal(5,5,sum);
+        // cal(5,5,(a,b)=>{
+            // console.log(a+b);
+        // })
+        // function getdata(id,nextid){
+        // setInterval(() => {
+        //     console.log("data",id)
+        // }, 5000);
+        // }
+        // getdata(1,)
+        //   getdata(2)
+        //     getdata(3)
+                //  function getdata(id,nextid){
+        // setInterval(() => {
+            // console.log("data",id)
+        // }, 5000);
+        // }
+        // getdata(1,)
+        //   getdata(2)
+            // getdata(3)
+    function getData(dataId,getNextData){
+    setTimeout(() => {
+        console.log("data",dataId)
+        if(getNextData){
+            getNextData();
+        }
+    }, 5000);
+    }
+        getData(1,()=>{
+            console.log("getting data ...")
+            getData(2,()=>{
+                console.log("getting data ...")
+                getData(3,()=>{
+                    console.log("getting data ...")
+
+                })
+            })
+        })
+         
+         
+        
+    </script>
+</body>
+</html>

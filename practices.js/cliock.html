@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <h1 id="newtime" >date: </h1>
+  <script>
+    function mytime(){
+      const time=document.getElementById("newtime");
+      let now=new Date()
+      let hours=now.getHours().toString().padStart(2,'0')
+      let min=now.getMinutes().toString().padStart(2,'0');
+      let second=now.getSeconds().toString().padStart(2,'0');
+      let ampm=hours>=12?"pm":"am";
+       hours = hours % 12;
+       hours = hours ? hours : 12;
+     hours=  hours.toString().padStart(2,'0')
+   let timeString = `${hours}:${min}:${second} ${ampm}`;
+   time.innerHTML=timeString
+    }
+    setInterval(mytime,1000)
+
+  </script>
+</body>
+</html>

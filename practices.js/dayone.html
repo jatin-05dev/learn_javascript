@@ -1,0 +1,48 @@
+ <!DOCTYPE html>
+<html>
+<body>
+<button id="createBtn">Create Div</button>
+<button id="removeBtn">Remove Div</button>
+
+<script>
+let myDiv;
+
+document.getElementById("createBtn").addEventListener("click", () => {
+  myDiv = document.createElement("div");
+  myDiv.innerText = "Hello, I am a div!";
+  myDiv.style.background = "lightblue";
+  myDiv.style.padding = "10px";
+  document.body.appendChild(myDiv);
+});
+
+document.getElementById("removeBtn").addEventListener("click", () => {
+  if (myDiv) myDiv.remove();
+});
+</script>
+</body>
+</html>
+<!DOCTYPE html>
+<html>
+<body>
+<script>
+// 1. createElement + appendChild
+let div1 = document.createElement("div");
+div1.innerText = "createElement se";
+document.body.appendChild(div1);
+
+// 2. innerHTML
+document.body.innerHTML += "<div>innerHTML se</div>";
+
+// 3. insertAdjacentHTML
+document.body.insertAdjacentHTML("beforeend", "<div>insertAdjacentHTML se</div>");
+
+// 4. cloneNode
+let div4 = div1.cloneNode(true);
+div4.innerText = "cloneNode se";
+document.body.appendChild(div4);
+
+// 5. document.write
+// document.write("<div>document.write se</div>"); // Load time pe hi kaam kare
+</script>
+</body>
+</html>

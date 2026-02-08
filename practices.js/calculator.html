@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Calculator</title>
+  <style>
+    body {
+      background: #222;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: #fff;
+      font-family: sans-serif;
+    }
+
+    .calculator {
+      background: #333;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+    }
+
+    .display {
+      background: #000;
+      color: #0f0;
+      font-size: 2rem;
+      padding: 10px;
+      text-align: right;
+      border-radius: 5px;
+      margin-bottom: 10px;
+    }
+
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 60px);
+      gap: 10px;
+    }
+
+    button {
+      padding: 15px;
+      font-size: 1.2rem;
+      border: none;
+      border-radius: 10px;
+      background: #444;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #555;
+    }
+
+    button.operator {
+      background: #f57c00;
+    }
+
+    button.equal {
+      background: #388e3c;
+    }
+
+    button.clear {
+      background: #d32f2f;
+    }
+  </style>
+</head>
+<body>
+  <div class="calculator">
+    <div id="display" class="display">0</div>
+    <div class="buttons">
+      <button onclick="clearDisplay()" class="clear">C</button>
+      <button onclick="appendValue('/')">/</button>
+      <button onclick="appendValue('*')">*</button>
+      <button onclick="backspace()">←</button>
+
+      <button onclick="appendValue('7')">7</button>
+      <button onclick="appendValue('8')">8</button>
+      <button onclick="appendValue('9')">9</button>
+      <button onclick="appendValue('-')" class="operator">-</button>
+
+      <button onclick="appendValue('4')">4</button>
+      <button onclick="appendValue('5')">5</button>
+      <button onclick="appendValue('6')">6</button>
+      <button onclick="appendValue('+')" class="operator">+</button>
+
+      <button onclick="appendValue('1')">1</button>
+      <button onclick="appendValue('2')">2</button>
+      <button onclick="appendValue('3')">3</button>
+      <button onclick="calculate()" class="equal">=</button>
+
+      <button onclick="appendValue('0')" style="grid-column: span 2;">0</button>
+      <button onclick="appendValue('.')">.</button>
+    </div>
+  </div>
+
+  <script>
+    let display = document.getElementById('display');
+
+    function appendValue(val) {
+      if (display. innerHTML === "0") {
+        display. innerHTML = val;
+      } else {
+        display.innerHTML += val;
+      }
+    }
+
+    function clearDisplay() {
+      display.innerText = "0";
+    }
+
+    function backspace() {
+      if (display.innerText.length === 1) {
+        display.innerText = "0";
+      }
+       else {
+        display.innerText = display.innerText.slice(0, -1);
+      }
+    }
+
+    function calculate() {
+      try {
+        display.innerText = eval(display.innerText);
+      } catch {
+        display.innerText = "Error";
+      }
+    }
+  </script>
+</body>
+</html>
+ <!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Stylish Calculator</title>
+
+  <style>
+    body {
+      background: #1e1e1e;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    #wrapper {
+      background: #2e2e2e;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    #box {
+      width: 260px;
+      height: 50px;
+      font-size: 24px;
+      font-weight: bold;
+      color: #fff;
+      background-color: #111;
+      border: none;
+      border-radius: 10px;
+      padding: 10px;
+      margin-bottom: 20px;
+      text-align: right;
+    }
+
+    .button-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 60px);
+      gap: 15px;
+    }
+
+    button {
+      width: 60px;
+      height: 60px;
+      font-size: 22px;
+      font-weight: bold;
+      background-color: #4d4dff;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    button:hover {
+      background-color: #3737ff;
+    }
+
+    button:active {
+      transform: scale(0.95);
+    }
+
+    .wide {
+      grid-column: span 2;
+    }
+
+    .operator {
+      background-color: #ff704d;
+    }
+
+    .operator:hover {
+      background-color: #e64522;
+    }
+
+    .control {
+      background-color: #999;
+    }
+
+    .control:hover {
+      background-color: #777;
+    }
+  </style>
+
+  <script>
+    function myBack() {
+      let boxval = document.getElementById('box').value;
+      let myval = boxval.substring(0, boxval.length - 1);
+      document.getElementById("box").value = myval;
+    }
+  </script>
+</head>
+<body>
+
+  <div id="wrapper">
+    <input type="text" id="box" />
+
+    <div class="button-grid">
+     
+     
+     
+     
+      <button onclick="document.getElementById('box').value += '1'">1</button>
+      <button onclick="document.getElementById('box').value += '2'">2</button>
+      <button onclick="document.getElementById('box').value += '3'">3</button>
+      <button class="operator" onclick="document.getElementById('box').value += '+'">+</button>
+
+      <button onclick="document.getElementById('box').value += '4'">4</button>
+      <button onclick="document.getElementById('box').value += '5'">5</button>
+      <button onclick="document.getElementById('box').value += '6'">6</button>
+      <button class="operator" onclick="document.getElementById('box').value += '-'">-</button>
+
+      <button onclick="document.getElementById('box').value += '7'">7</button>
+      <button onclick="document.getElementById('box').value += '8'">8</button>
+      <button onclick="document.getElementById('box').value += '9'">9</button>
+      <button class="operator" onclick="document.getElementById('box').value += '*'">*</button>
+
+      <button onclick="document.getElementById('box').value += '0'">0</button>
+      <button onclick="document.getElementById('box').value += '.'">.</button>
+      <button class="operator" onclick="document.getElementById('box').value += '/'">/</button>
+      <button class="operator" onclick="document.getElementById('box').value = eval(document.getElementById('box').value)">=</button>
+
+      <button class="control" onclick="document.getElementById('box').value = ''">AC</button>
+      <button class="control" onclick="myBack()">BK</button>
+    </div>
+  </div>
+
+</body>
+</html> -->

@@ -1,0 +1,365 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Word & Character Counter</title>
+    <style>
+        :root {
+            --bg: #0f1115;
+            --panel: #171923;
+            --muted: #9aa4b2;
+            --text: #e6e8ee;
+            --accent: #7c3aed;
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        body {
+            margin: 0;
+            font-family: system-ui, Segoe UI, Roboto, Arial;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        .wrap {
+            width: min(960px, 100%);
+            display: grid;
+            gap: 16px
+        }
+
+        h1 {
+            margin: 0 0 4px;
+            font-size: 28px
+        }
+
+        p.sub {
+            margin: 0 0 8px;
+            color: var(--muted);
+            font-size: 14px
+        }
+
+        .controls {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            align-items: center
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 240px;
+            resize: vertical;
+            padding: 16px;
+            line-height: 1.6;
+            background: var(--panel);
+            color: var(--text);
+            border: 1px solid #24283b;
+            border-radius: 12px;
+            outline: none;
+            box-shadow: inset 0 0 0 1px transparent;
+        }
+
+        textarea:focus {
+            box-shadow: 0 0 0 2px #2d3250
+        }
+
+        .stats {
+            display: grid;
+            gap: 10px;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        }
+
+        .card {
+            background: var(--panel);
+            border: 1px solid #24283b;
+            border-radius: 14px;
+            padding: 14px;
+        }
+
+        .label {
+            color: var(--muted);
+            font-size: 12px;
+            letter-spacing: .06em;
+            text-transform: uppercase
+        }
+
+        .value {
+            font-size: 28px;
+            font-weight: 700;
+            margin-top: 4px
+        }
+
+        .row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap
+        }
+
+        button,
+        .pill {
+            border: none;
+            border-radius: 999px;
+            padding: 10px 14px;
+            background: #23263a;
+            color: var(--text);
+            cursor: pointer;
+        }
+
+        button.primary {
+            background: var(--accent)
+        }
+
+        button:disabled {
+            opacity: .6;
+            cursor: not-allowed
+        }
+
+        .right {
+            margin-left: auto
+        }
+
+        .limit {
+            background: #1d2031;
+            border: 1px solid #2a2f49;
+            border-radius: 12px;
+            padding: 10px;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        input[type="number"] {
+            width: 110px;
+            background: #0e1020;
+            border: 1px solid #2a2f49;
+            color: var(--text);
+            border-radius: 8px;
+            padding: 8px 10px;
+        }
+
+        .ok {
+            color: #38bdf8
+        }
+
+        .warn {
+            color: #f59e0b
+        }
+
+        .bad {
+            color: #f43f5e
+        }
+    </style>
+</head>
+
+<body>
+    <main class="wrap">
+        <div>
+            <h1>📝 Word & Character Counter</h1>
+            <p class="sub">Type below — counts update live. Works with English/Hindi and most languages.</p>
+        </div>
+
+        <div class="controls row">
+            <button id="copy" class="pill">Copy Text</button>
+            <button id="clear" class="pill">Clear</button>
+            <label class="pill" style="display:flex; align-items:center; gap:8px;">
+                <input type="checkbox" id="trim" />
+                Trim extra spaces
+            </label>
+            <span class="right limit">
+                <span>Word limit:</span>
+                <input type="number" id="limitInput" placeholder="e.g. 150" />
+                <span id="limitInfo" class="ok">No limit</span>
+            </span>
+        </div>
+
+        <textarea id="box" placeholder="Start typing here..."></textarea>
+
+        <section class="stats">
+            <div class="card">
+                <div class="label">Words</div>
+                <div class="value" id="words">0</div>
+            </div>
+            <div class="card">
+                <div class="label">Characters</div>
+                <div class="value" id="chars">0</div>
+            </div>
+            <div class="card">
+                <div class="label">Chars (no spaces)</div>
+                <div class="value" id="charsNoSpace">0</div>
+            </div>
+            <div class="card">
+                <div class="label">Lines</div>
+                <div class="value" id="lines">0</div>
+            </div>
+            <div class="card">
+                <div class="label">Sentences (approx)</div>
+                <div class="value" id="sentences">0</div>
+            </div>
+            <div class="card">
+                <div class="label">Reading Time (200 wpm)</div>
+                <div class="value" id="readTime">0s</div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const box = document.getElementById('box');
+        const wordsEl = document.getElementById('words');
+        const charsEl = document.getElementById('chars');
+        const charsNoSpaceEl = document.getElementById('charsNoSpace');
+        const linesEl = document.getElementById('lines');
+        const sentencesEl = document.getElementById('sentences');
+        const readTimeEl = document.getElementById('readTime');
+        const copyBtn = document.getElementById('copy');
+        const clearBtn = document.getElementById('clear');
+        const trimChk = document.getElementById('trim');
+        const limitInput = document.getElementById('limitInput');
+        const limitInfo = document.getElementById('limitInfo');
+
+        function formatReadTime(w) {
+            if (w === 0) return '0s';
+            const seconds = Math.round((w / 200) * 60);
+            const m = Math.floor(seconds / 60);
+            const s = seconds % 60;
+            return m ? `${m}m ${s}s` : `${s}s`;
+        }
+
+        function count(text) {
+            // Optionally normalize multiple spaces if "Trim extra spaces" is checked
+            if (trimChk.checked) {
+                text = text.replace(/\s+/g, ' ').replace(/^\s+|\s+$/g, '');
+            }
+            // Unicode-aware word match (letters/digits across scripts)
+            let wordMatches;
+            try {
+                wordMatches = text.match(/[\p{L}\p{N}’'-]+/gu);
+            } catch (e) {
+                // Fallback for older browsers without Unicode property escapes
+                wordMatches = text.trim().match(/[A-Za-z0-9’'-]+/g);
+            }
+            const words = wordMatches ? wordMatches.length : 0;
+            const chars = text.length;
+            const charsNoSpace = text.replace(/\s/g, '').length;
+            const lines = text.length ? text.split(/\n/).length : 0;
+            const sentences = (text.match(/[^.!?।…]+[.!?।…]+(\s|$)/g) || []).length;
+
+            // Update UI
+            wordsEl.textContent = words;
+            charsEl.textContent = chars;
+            charsNoSpaceEl.textContent = charsNoSpace;
+            linesEl.textContent = lines;
+            sentencesEl.textContent = sentences;
+            readTimeEl.textContent = formatReadTime(words);
+
+            // Limit indicator
+            const lim = parseInt(limitInput.value, 10);
+            if (!isNaN(lim) && lim > 0) {
+                const remain = lim - words;
+                let cls = 'ok', msg = '';
+                if (remain > 20) { cls = 'ok'; msg = `${remain} left`; }
+                else if (remain >= 0) { cls = 'warn'; msg = `${remain} left`; }
+                else { cls = 'bad'; msg = `${-remain} over`; }
+                limitInfo.className = cls;
+                limitInfo.textContent = msg;
+                // Optional soft cap coloring in textarea border
+                box.style.boxShadow = remain < 0 ? '0 0 0 2px #5b1b1b' : '';
+            } else {
+                limitInfo.className = 'ok';
+                limitInfo.textContent = 'No limit';
+                box.style.boxShadow = '';
+            }
+        }
+
+        // Events
+        box.addEventListener('input', () => count(box.value));
+        trimChk.addEventListener('change', () => count(box.value));
+        limitInput.addEventListener('input', () => count(box.value));
+
+        copyBtn.addEventListener('click', async () => {
+            await navigator.clipboard.writeText(box.value);
+            copyBtn.textContent = 'Copied!';
+            setTimeout(() => copyBtn.textContent = 'Copy Text', 900);
+        });
+
+        clearBtn.addEventListener('click', () => {
+            box.value = '';
+            count('');
+            box.focus();
+        });
+
+        // Init
+        count('');
+    </script>
+</body>
+
+</html> -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Word & Character Counter</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #111;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
+    }
+    textarea {
+      width: 400px;
+      height: 200px;
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: none;
+      resize: none;
+      outline: none;
+      background: #222;
+      color: #fff;
+    }
+    .stats {
+      margin-top: 15px;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+  <h2>📝 Word & Character Counter</h2>
+  <textarea id="text" placeholder="Type something..."></textarea>
+  <div class="stats">
+    Words: <span id="wordCount">0</span> | 
+    Characters: <span id="charCount">0</span>
+  </div>
+
+  <script>
+    const textarea = document.getElementById("text");
+    const wordCount = document.getElementById("wordCount");
+    const charCount = document.getElementById("charCount");
+
+    textarea.addEventListener("input", () => {
+      const text = textarea.value.trim();
+
+      // Count characters
+      charCount.textContent = text.length;
+
+      // Count words (split by spaces)
+      const words = text.split(/\s+/).filter(word => word.length > 0);
+      wordCount.textContent = words.length;
+    });
+  </script>
+</body>
+</html>
+x

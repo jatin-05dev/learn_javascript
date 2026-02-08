@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <div id="display"></div>
+    <button onclick="document.getElementById('display').innerHTML+='1'">1</button>
+    <button onclick="document.getElementById('display').innerHTML+='2'">2</button>
+    <button onclick="document.getElementById('display').innerHTML+='3'">3</button>
+    <button onclick="document.getElementById('display').innerHTML+='4'">4</button>
+    <button onclick="document.getElementById('display').innerHTML+='5'">5</button>
+    <button onclick="document.getElementById('display').innerHTML+='6'">6</button>
+    <button onclick="document.getElementById('display').innerHTML+='7'">7</button>
+    <button onclick="document.getElementById('display').innerHTML+='8'">8</button>
+    <button onclick="document.getElementById('display').innerHTML+='9'">9</button>
+    <button onclick="document.getElementById('display').innerHTML+='0'">0</button>
+    <button onclick="document.getElementById('display').innerHTML+='.'">.</button>
+    <button onclick="document.getElementById('display').innerHTML+='/'">/</button>
+    <button onclick="document.getElementById('display').innerHTML+='*'">*</button>
+    <button onclick="document.getElementById('display').innerHTML+='-'">-</button>
+    <button onclick="document.getElementById('display').innerHTML+='+'">+</button>
+    <button onclick="document.getElementById('display').innerHTML=eval(document.getElementById('display').innerHTML)">=</button>
+    <button onclick="myclear()"> </button>
+     <button onclick="myback()"> </button>
+    
+                  
+                  
+    
+     <script>
+        function myback(){
+          if(document.getElementById('display').innerHTML.length===1){
+              document.getElementById('display').innerHTML="0"
+          }  
+          else{
+            document.getElementById('display').innerHTML=  document.getElementById('display').innerHTML.slice(0,-1)
+          }
+        }
+        function myclear(){
+            document.getElementById('display').innerHTML=" "
+        }
+     </script>
+    
+    
+    
+ 
+    
+      
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+
+
+
+
+
+
+    <script src="calc.js"></script>
+</body>
+
+</html>

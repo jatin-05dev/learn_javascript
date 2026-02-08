@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+     <h1 id="count"></h1>
+     <button id="resetbtn"> resetbutton</button>
+     <button id ="stop"> stop</button>
+     <button id="strt"> start</button>
+      
+     <script>
+        let count=document.getElementById("count");
+        let resetbtn1=document.getElementById("resetbtn");
+        let stop1=document.getElementById("stop");
+        let s=document.getElementById("strt");
+
+         let time=0;  
+         let num=parseInt(prompt("enter num"));
+        function mytime(){
+         time++;
+ 
+        if(num==time){
+            clearInterval(clear)
+        }
+       count.innerHTML=time.toString().padStart(2,'0')
+        }
+      
+     let clear=setInterval(mytime,100);
+stop1.addEventListener("click",()=>{
+  clearInterval(clear)
+}) 
+resetbtn1.addEventListener("click",()=>{
+clearInterval(clear);
+count.innerHTML=0;
+})    
+s.addEventListener("click",()=>{
+ setInterval(mytime,100)
+})
+
+     </script>
+</body>
+</html>

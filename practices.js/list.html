@@ -1,0 +1,108 @@
+ <!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To Do List</title>
+</head>
+<body>
+    <h1>To Do List</h1>
+    <input type="text" id="input">
+    <button id="add">Add Task</button>
+    <button id="del">delete task</button>
+    <ul id="tasklist"></ul>
+
+    <script>
+    let input=document.getElementById("input") 
+    let del =document.getElementById("del") 
+    let add=document.getElementById("add")
+    let ul=document.getElementById("tasklist")
+    ul.innerHTML=localStorage.getItem("tasks")||"";
+    add.addEventListener("click",()=>{
+        let int=input.value.trim()
+     if(input===" "){
+        alert("entrre task first");
+        return;
+
+     }
+      let list=document.createElement("li")
+      list.innerHTML=int
+      ul.appendChild(list)
+localStorage.setItem("tasks",ul.innerHTML)
+      
+      input.value=""
+list.addEventListener("click",()=>{
+   ul.removeChild(li)
+   localStorage.setItem("tasks",ul.innerHTML)
+})
+    
+      
+
+    })
+    
+    
+    </script>
+</body>
+</html> -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To Do List</title>
+</head>
+<body>
+    <h1>To Do List</h1>
+    <input type="text" id="input">
+    <button id="add">Add Task</button>
+    <button id="del">Delete All</button>
+    <ul id="tasklist"></ul>
+
+    <script>
+    let input = document.getElementById("input"); 
+    let del = document.getElementById("del"); 
+    let add = document.getElementById("add");
+    let ul = document.getElementById("tasklist");
+
+    // Page load pe purane tasks wapas lagao
+    ul.innerHTML = localStorage.getItem("tasks") || "";
+
+    // Add Task
+    add.addEventListener("click", () => {
+        let int = input.value.trim(); // latest value lo
+        if (int === "") {
+            alert("Enter task first");
+            return;
+        }
+        let list = document.createElement("li");
+        list.innerHTML = int;
+        ul.appendChild(list);
+
+        // Save to localStorage
+        localStorage.setItem("tasks", ul.innerHTML);
+
+        input.value = "";
+
+        // Click karke delete kare
+        list.addEventListener("click", () => {
+            list.remove();
+            localStorage.setItem("tasks", ul.innerHTML);
+        });
+    });
+
+    // Delete All
+    del.addEventListener("click", () => {
+        ul.innerHTML = "";
+        localStorage.removeItem("tasks");
+    });
+
+    // Pehle se saved tasks par click delete ka feature
+    ul.addEventListener("click", (e) => {
+        if (e.target.tagName === "LI") {
+            e.target.remove();
+            localStorage.setItem("tasks", ul.innerHTML);
+        }
+    });
+    </script>
+</body>
+</html>
