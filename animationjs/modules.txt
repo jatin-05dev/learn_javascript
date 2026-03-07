@@ -1,0 +1,13 @@
+js modules 
+user modules predefined and in built
+inbuilt
+common js modules and es 6 modules
+js modules
+main.js          add.js->add
+require()        modules.exports
+
+es modules -> type = "module"
+import          export
+default,named  se import export kre 
+default ek file se 
+ek files multiple ko named 
