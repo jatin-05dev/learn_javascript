@@ -1,0 +1,1 @@
+s=eval(input("enter anumber")

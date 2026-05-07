@@ -1,0 +1,162 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Advanced Archery Game</title>
+  <style>
+    body { margin:0; background:#0b1a2b; color:#fff; display:flex; justify-content:center; align-items:center; height:100vh; font-family:Arial }
+    .wrap { width:900px; background:#111827; border-radius:12px; padding:14px; }
+    header { display:flex; justify-content:space-between; margin-bottom:10px; }
+    .stat { background:#1f2937; padding:6px 10px; border-radius:6px; margin-left:5px; }
+    canvas { background:#1e293b; border-radius:8px; width:100%; height:450px; }
+    .controls { margin-top:10px; display:flex; gap:10px; align-items:center; }
+    button { background:#f59e0b; border:0; padding:6px 12px; border-radius:6px; font-weight:bold; cursor:pointer; }
+    #powerBar { width:200px; height:10px; background:#333; border-radius:5px; overflow:hidden; }
+    #powerFill { width:0; height:100%; background:lime; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h2>🏹 Advanced Archery</h2>
+      <div>
+        <span class="stat" id="score">Score: 0</span>
+        <span class="stat" id="arrows">Arrows: 10</span>
+        <span class="stat" id="level">Level: 1</span>
+      </div>
+    </header>
+    <canvas id="game" width="900" height="450"></canvas>
+    <div class="controls">
+      <button id="restart">Restart</button>
+      <div id="powerBar"><div id="powerFill"></div></div>
+    </div>
+  </div>
+
+  <script>
+    const cvs = document.getElementById("game");
+    const ctx = cvs.getContext("2d");
+    const scoreEl = document.getElementById("score");
+    const arrowsEl = document.getElementById("arrows");
+    const levelEl = document.getElementById("level");
+    const powerFill = document.getElementById("powerFill");
+
+    let score=0, arrows=10, level=1, wind=0;
+    let bow = {x:70,y:cvs.height/2};
+    let aimingAngle = 0;
+    let arrowList = [];
+    let targets = [];
+    let charging = false, power=0;
+
+    function spawnTarget() {
+      let y = 100+Math.random()*(cvs.height-200);
+      let r = 20+Math.random()*20;
+      let speed = 1+Math.random()*level;
+      targets.push({x:700,y,r,speed,dir:Math.random()<0.5?-1:1,points:Math.round(50-r)});
+    }
+
+    function drawBow() {
+      ctx.save();
+      ctx.translate(bow.x,bow.y);
+      ctx.rotate(aimingAngle);
+      ctx.fillStyle="brown";
+      ctx.fillRect(-10,-40,20,80);
+      ctx.restore();
+    }
+
+    function drawTargets() {
+      targets.forEach(t=>{
+        ctx.fillStyle="red";
+        ctx.beginPath();ctx.arc(t.x,t.y,t.r,0,Math.PI*2);ctx.fill();
+        ctx.fillStyle="white";
+        ctx.beginPath();ctx.arc(t.x,t.y,t.r/2,0,Math.PI*2);ctx.fill();
+      });
+    }
+
+    function updateTargets() {
+      targets.forEach(t=>{
+        t.y += t.dir*t.speed;
+        if(t.y<t.r||t.y>cvs.height-t.r) t.dir*=-1;
+      });
+    }
+
+    function drawArrows() {
+      ctx.fillStyle="black";
+      arrowList.forEach(a=>{
+        ctx.save();
+        ctx.translate(a.x,a.y);
+        ctx.rotate(Math.atan2(a.vy,a.vx));
+        ctx.fillRect(0,-2,25,4);
+        ctx.restore();
+      });
+    }
+
+    function updateArrows() {
+      arrowList.forEach(a=>{
+        a.vx += wind*0.01;
+        a.vy += 0.2; // gravity
+        a.x += a.vx; a.y += a.vy;
+        targets.forEach(t=>{
+          let dx=a.x-t.x,dy=a.y-t.y;
+          if(Math.sqrt(dx*dx+dy*dy)<t.r){
+            score+=t.points;
+            a.hit=true; t.hit=true;
+          }
+        });
+      });
+      arrowList=arrowList.filter(a=>!a.hit&&a.x<cvs.width&&a.y<cvs.height);
+      targets=targets.filter(t=>!t.hit);
+    }
+
+    function loop(){
+      ctx.clearRect(0,0,cvs.width,cvs.height);
+      ctx.fillStyle="#1e293b";ctx.fillRect(0,0,cvs.width,cvs.height);
+
+      drawBow();
+      drawTargets(); updateTargets();
+      drawArrows(); updateArrows();
+
+      scoreEl.textContent="Score: "+score;
+      arrowsEl.textContent="Arrows: "+arrows;
+      levelEl.textContent="Level: "+level;
+
+      requestAnimationFrame(loop);
+    }
+
+    cvs.addEventListener("mousemove", e=>{
+      let rect=cvs.getBoundingClientRect();
+      let mx=e.clientX-rect.left, my=e.clientY-rect.top;
+      aimingAngle=Math.atan2(my-bow.y,mx-bow.x);
+    });
+
+    cvs.addEventListener("mousedown", ()=>{charging=true;power=0;});
+    cvs.addEventListener("mouseup", ()=>{
+      if(arrows<=0)return;
+      arrows--;
+      let speed=8+power*0.2;
+      arrowList.push({
+        x:bow.x,y:bow.y,
+        vx:Math.cos(aimingAngle)*speed,
+        vy:Math.sin(aimingAngle)*speed
+      });
+      charging=false;power=0;powerFill.style.width="0%";
+    });
+
+    function chargeLoop(){
+      if(charging){
+        power=Math.min(power+1,100);
+        powerFill.style.width=power+"%";
+      }
+      requestAnimationFrame(chargeLoop);
+    }
+
+    document.getElementById("restart").onclick=()=>{
+      score=0;arrows=10;level=1;targets=[];arrowList=[];
+      for(let i=0;i<3;i++)spawnTarget();
+    };
+
+    // init
+    for(let i=0;i<3;i++)spawnTarget();
+    loop(); chargeLoop();
+  </script>
+</body>
+</html>
