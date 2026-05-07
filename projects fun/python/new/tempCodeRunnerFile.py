@@ -1,1 +1,0 @@
-print(stu.__doc__)

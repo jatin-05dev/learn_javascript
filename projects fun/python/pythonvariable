@@ -1,4 +1,0 @@
-x,y,z=10,20,30
-print(x)
-x=y=z=102;
-print(y,x,z)
